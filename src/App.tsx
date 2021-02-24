@@ -17,6 +17,7 @@ const InputWrapper = styled.div`
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.05);
   padding: 32px;
+  position: relative;
 
   label {
     margin-right: 8px;
@@ -82,6 +83,15 @@ const Title = styled.p`
   font-style: italic;
 `
 
+const ClearResults = styled.p`
+  position: absolute;
+  top: 96px;
+  right: 0;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 12px;
+`
+
 function App() {
   const [loci, setLoci] = React.useState<Array<{ id: string; locus: string }>>(
     [],
@@ -110,7 +120,7 @@ function App() {
         {
           id: array[i][1],
           index: Number(array[i][2]),
-          probability: Number(array[i][4]),
+          probability: Number(array[i][5]),
         },
       ]
     }
@@ -181,6 +191,8 @@ function App() {
     )
   }
 
+  const showResults = loci.length > 0 && probs.length > 0
+
   return (
     <div className="App">
       <InputWrapper>
@@ -198,7 +210,7 @@ function App() {
             }}
           />
         </div>
-        <div>
+        <div style={{ position: 'relative' }}>
           <label htmlFor="predictions">Upload output</label>
           <input
             type="file"
@@ -211,10 +223,20 @@ function App() {
               }
             }}
           />
+          {showResults && (
+            <ClearResults
+              onClick={() => {
+                setLoci([])
+                setProbs([])
+              }}
+            >
+              Clear Results
+            </ClearResults>
+          )}
         </div>
       </InputWrapper>
 
-      {loci.length > 0 && probs.length > 0 && renderTables()}
+      {showResults && renderTables()}
     </div>
   )
 }
