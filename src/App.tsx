@@ -1,11 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const mapToHex: Record<string, string> = {
-  A: '#ECBAAF',
-  T: '#B9D9EF',
-  C: '#F3E9A6',
-  G: '#B5D8CE',
+const mapToHex = (a: number): Record<string, string> => ({
+  A: `rgba(236, 186, 175, ${a})`,
+  T: `rgba(185, 217, 239, ${a})`,
+  C: `rgba(243, 233, 166, ${a})`,
+  G: `rgba(181, 216, 206, ${a})`,
+})
+
+const complement: Record<string, string> = {
+  A: 'G',
+  C: 'T',
+  G: 'A',
+  T: 'C',
 }
 
 const BORDER = 'rgba(0,0,0,0.1)'
@@ -166,7 +173,7 @@ function App() {
                 {locus.locus.split('').map((c, k) => (
                   <Item
                     key={k}
-                    style={{ height: 48, backgroundColor: mapToHex[c] }}
+                    style={{ height: 48, backgroundColor: mapToHex(1)[c] }}
                   >
                     <p style={{ fontSize: 14, fontWeight: 'bold' }}>{c}</p>
                   </Item>
@@ -176,7 +183,15 @@ function App() {
                 {locus.locus.split('').map((c, k) => {
                   const p = items.find((i) => i.index === k)
                   return (
-                    <Item key={k} style={{ height: 48 }}>
+                    <Item
+                      key={k}
+                      style={{
+                        height: 48,
+                        backgroundColor: p
+                          ? mapToHex(p.probability * 0.9 + 0.1)[complement[c]]
+                          : 'none',
+                      }}
+                    >
                       <p style={{ fontSize: 12, fontWeight: 'bold' }}>
                         {p ? `${(p.probability * 100).toFixed(1)}` : ''}
                       </p>
