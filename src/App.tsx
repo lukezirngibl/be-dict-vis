@@ -29,6 +29,7 @@ const InputWrapper = styled.div`
   label {
     margin-right: 8px;
     font-size: 14px;
+    font-weight: bold;
   }
 
   div {
@@ -97,6 +98,13 @@ const ClearResults = styled.p`
   text-decoration: underline;
   cursor: pointer;
   font-size: 12px;
+`
+
+const Logo = styled.img`
+  width: 64px;
+  height: 64px;
+  margin-right: 64px;
+  border-radius: 32px;
 `
 
 function App() {
@@ -211,6 +219,7 @@ function App() {
   return (
     <div className="App">
       <InputWrapper>
+        <Logo src={'/kim.jpg'} />
         <div>
           <label htmlFor="predictions">Upload predictions</label>
           <input
